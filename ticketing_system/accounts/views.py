@@ -179,7 +179,13 @@ def create_ticket(request, project_id):
 
 @login_required(login_url='login')
 def ticket_detail(request, ticket_id):
-    ticket = get_object_or_404(Ticket, id=ticket_id)
+    ticket = get_object_or_404(Ticket, id=ticket_id)    
+    if request.method == "POST":
+        comment = request.POST.get('comment')
+        ticket.comment = comment
+        ticket.status = "Completed"
+        ticket.save()
+        return redirect("dashboard")
     ticket_attachments = ticket.attachments.all()
     return render(
         request,
@@ -220,14 +226,26 @@ def assigned_tickets(request):
 @login_required(login_url='login')
 def update_ticket_status(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
+    new_status = request.GET.get("status")
+    if new_status in ["Ongoing", "Completed"]:
+        ticket.status = new_status
+        ticket.save()
+    return redirect("dashboard")
 
+
+def check_ticket(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)    
     if request.method == "POST":
         new_status = request.POST.get("status")
-        if new_status in ["Ongoing", "Completed"]:
-            ticket.status = new_status
-            ticket.save()
-            return redirect("dashboard")
-    return render(request, "update_ticket_status.html", {"ticket": ticket})
+        ticket.status = new_status
+        ticket.save()
+        return redirect("dashboard")
+    ticket_attachments = ticket.attachments.all()
+    return render(
+        request,
+        "check_ticket.html",
+        {"ticket": ticket, "ticket_attachments": ticket_attachments},
+    )
 
 
 @login_required(login_url='login')
@@ -238,7 +256,6 @@ def dashboard(request):
 
     allowed_statuses = ["Draft", "Ongoing", "Completed"]
     if request.user.is_superuser:
-        print("++++++++++++++++++++++")
         assigned_tickets = Ticket.objects.all()
     else:
         assigned_tickets = Ticket.objects.filter(
