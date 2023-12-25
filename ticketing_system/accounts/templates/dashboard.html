@@ -83,10 +83,14 @@ Dashboard
                         <td>
                             {% if ticket.status == 'Draft' %}
                             <a href="{% url 'update_ticket_status' ticket.id %}?status=Ongoing" class="btn btn-sm btn-warning">Set Ongoing</a>
-                            <a href="{% url 'update_ticket_status' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
+                            <a href="{% url 'ticket_detail' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
                             {% elif ticket.status == 'Ongoing' %}
-                            <a href="{% url 'update_ticket_status' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
+                            <a href="{% url 'ticket_detail' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
+                            
+                            {% elif ticket.status == 'Completed' and request.user.is_superuser %}
+                                <a href="{% url 'check_ticket' ticket.id %}" class="btn btn-sm btn-success">Check</a>
                             {% endif %}
+                            
                         </td>
                     </tr>
                 {% empty %}
