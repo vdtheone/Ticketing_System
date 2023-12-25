@@ -35,24 +35,18 @@ Dashboard
     
 
     <!-- Ticket List Section -->
-    <h2 class="mt-5 mb-3">Your Assigned Tickets</h2>
+    <h2 class="mt-5 mb-3 text-center">Your Assigned Tickets</h2>
     <form method="GET" action="">
         <div class="row">
-            <div class="col-md-9">
-                <div class="form-group">
-                    <label for="timeFilter">Filter by Time:</label>
-                    <select id="timeFilter" name="timeFilter" class="form-control">
-                        <option value="all">All</option>
-                        <option value="day">Last 24 Hours</option>
-                        <option value="week">Last 7 Days</option>
-                        <option value="month">Last 30 Days</option>
-                        <!-- Add more options for time filtering -->
-                    </select>
-                </div>
-            </div>
             <div class="col-md-3">
-                <div class="form-group d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                <div class="form-group">
+                    <strong><label for="timeFilter">Filter by Time:</label></strong>
+                    <select id="timeFilter" name="timeFilter" class="form-control">
+                        <option value="all" {% if filter == "all" %}selected{% endif %}>All</option>
+                        <option value="day" {% if filter == "day" %}selected{% endif %}>Last 24 Hours</option>
+                        <option value="week" {% if filter == "week" %}selected{% endif %}>Last 7 Days</option>
+                        <option value="month" {% if filter == "month" %}selected{% endif %}>Last 30 Days</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -104,4 +98,17 @@ Dashboard
     
     
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // jQuery function to detect change in select element
+    $(document).ready(function() {
+        $('#timeFilter').change(function() {
+            // Trigger form submission on select change
+            $(this).closest('form').submit();
+        });
+    });
+</script>
+
     {% endblock %}
+
+

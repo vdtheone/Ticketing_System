@@ -284,6 +284,7 @@ def dashboard(request):
             "total_ongoing_tickets": total_ongoing_tickets,
             "total_completed_tickets": total_completed_tickets,
             "assigned_tickets": assigned_tickets,
+            "filter": time_filter,
         },
     )
 
