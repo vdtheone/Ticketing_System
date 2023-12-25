@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}
+  Project List
+{% endblock %}
+
+{% block content %}
+        <h2>Assigned Tickets</h2>
+        <form method="GET" action="">
+            <div class="form-group">
+                <label for="timeFilter">Filter by Time:</label>
+                <select id="timeFilter" name="timeFilter" class="form-control">
+                    <option value="all">All</option>
+                    <option value="day">Last 24 Hours</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="month">Last 30 Days</option>
+                    <!-- Add more options for time filtering -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+        </form>
+
+        <div class="row">
+            {% for ticket in assigned_tickets %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="{% url 'ticket_detail' ticket_id=ticket.id %}">
+                                <h5 class="card-title">{{ ticket.name }}</h5>
+                                <p class="card-text"><strong>Description:</strong> {{ ticket.description }}</p>
+                                <p class="card-text"><strong>Status:</strong> {{ ticket.status }}</p>
+                                <!-- Display other ticket details as needed -->
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:3 and not forloop.last %}
+                    </div><div class="row">
+                {% endif %}
+            {% empty %}
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">No assigned tickets found.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endblock %}

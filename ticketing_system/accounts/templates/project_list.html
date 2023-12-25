@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+  Project List
+{% endblock %}
+
+{% block content %}
+  <h2>Project List</h2>
+
+  <!-- Button to create a new project -->
+  {% if request.user.is_superuser %}
+  <a href="{% url 'create_project' %}" class="btn btn-primary mb-3">Create New Project</a>
+  {% endif %}
+  {% comment %} <a href="{% url 'assign_projects' %}" class="btn btn-primary mb-3">Assign</a> {% endcomment %}
+
+  <!-- Table to display the list of projects -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        {% if request.user.is_superuser %}  <th>Actions</th> {% endif %}
+        
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through projects -->
+      {% for project in projects %}
+        <tr>
+          <td>{{ project.name }}</td>
+          <td>{{ project.description }}</td>
+          <td>{{ project.status }}</td>
+          {% if request.user.is_superuser %}
+          <td>
+            <!-- Edit button -->
+            <a href="{% url 'edit_project' project.id %}" class="btn btn-sm btn-primary">Edit</a>
+
+            <!-- Block/Unblock button -->
+            {% if project.is_blocked %}
+              <a href="{% url 'unblock_project' project.id %}" class="btn btn-sm btn-warning">Unblock</a>
+            {% else %}
+              <a href="{% url 'block_project' project.id %}" class="btn btn-sm btn-secondary">Block</a>
+            {% endif %}
+
+            <!-- Delete button -->
+            <a href="{% url 'delete_project' project.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+            <!-- Assign button -->
+            {% if not project.is_blocked %}
+            <a href="{% url 'assign_project' project.id %}" class="btn btn-sm btn-info">Assign User</a>
+
+            
+            <!-- Assign ticket button -->
+            <a href="{% url 'create_ticket' project.id %}" class="btn btn-sm btn-success">Assign Ticket</a>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

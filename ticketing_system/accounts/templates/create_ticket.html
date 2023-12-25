@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}
+  Project List
+{% endblock %}
+
+{% block content %}
+    <h2>Create Ticket</h2>
+
+    <form method="post" class="my-4" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Name:</label>
+            <input type="text" id="id_name" name="name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description:</label>
+            <textarea id="id_description" name="description" class="form-control" required></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_assigned_to" class="form-label">Assigned To:</label>
+            <select id="id_assigned_to" name="assigned_to" class="form-select">
+                <!-- Option 1: Populate users from Django backend -->
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+                <!-- Option 2: Hardcoded users -->
+                <!--
+                <option value="1">User 1</option>
+                <option value="2">User 2</option>
+                -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_project" class="form-label">Project:</label>
+            <select id="id_project" name="project" class="form-select">
+                <!-- Option 1: Populate projects from Django backend -->
+                <option value="{{ project.id }}">{{ project.name }}</option>
+                <!-- Option 2: Hardcoded projects -->
+                <!--
+                <option value="1">Project 1</option>
+                <option value="2">Project 2</option>
+                -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_status" class="form-label">Status:</label>
+            <select id="id_status" name="status" class="form-select">
+                <option value="Draft">Draft</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Archived">Archived</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_attachment" class="form-label">Attachment:</label>
+            <input type="file" id="id_attachment" name="attachment" class="form-control" />
+        </div>
+        
+        <div class="mb-3">
+            <label for="id_attachment_type" class="form-label">Attachment Type:</label>
+            <select id="id_attachment_type" name="attachment_type" class="form-select">
+                <option value="Image">Image</option>
+                <option value="Video">Video</option>
+                <option value="Docs">Docs</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Create Ticket</button>
+    </form>
+{% endblock %}

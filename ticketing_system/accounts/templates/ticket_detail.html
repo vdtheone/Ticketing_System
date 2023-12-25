@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+Ticket Details
+{% endblock %}
+
+{% block content %}
+        <h2>Ticket Details</h2><br>
+        <h3>{{ ticket.name }}</h3>
+        <p><strong>Description:</strong> {{ ticket.description }}</p>
+        <p><strong>Assigned To:</strong> {{ ticket.assigned_to }}</p>
+        <p><strong>Project:</strong> {{ ticket.project }}</p>
+        <p><strong>Status:</strong> {{ ticket.status }}</p>
+        <p><strong>Creared At:</strong> {{ ticket.created_at }}</p>
+
+        <hr>
+
+        <h3>Attachments:</h3>
+        <ul class="list-group">
+            {% for attachment in ticket_attachments %}
+                <li class="list-group-item">
+                    <strong>Type:</strong> {{ attachment.attachment_type }}
+                    <a href="{{ attachment.attachment.url }}" target="_blank" class="btn btn-primary ml-3">View Attachment</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No attachments for this ticket.</li>
+            {% endfor %}
+        </ul>
+
+        
+    {% endblock %}

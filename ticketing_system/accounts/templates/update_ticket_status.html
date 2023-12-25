@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+  Project List
+{% endblock %}
+
+{% block content %}
+  <h2>Update Ticket Status</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    <label for="id_status">Status:</label>
+    <select id="id_status" name="status">
+      <option value="Ongoing">Ongoing</option>
+      <option value="Completed">Completed</option>
+    </select>
+    <button type="submit">Update</button>
+  </form>
+{% endblock %}

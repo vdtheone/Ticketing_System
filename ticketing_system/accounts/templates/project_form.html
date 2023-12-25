@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+  Project List
+{% endblock %}
+
+{% block content %}
+    <h2>Project Management</h2>
+
+    <!-- Form for creating/editing projects -->
+    <form method="post" action="{% url 'create_project' %}" class="my-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Name:</label>
+            <input type="text" id="id_name" name="name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description:</label>
+            <textarea id="id_description" name="description" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="id_status" class="form-label">Status:</label>
+            <select id="id_status" name="status" class="form-select">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+                <option value="Completed">Completed</option>
+                <option value="Archived">Archived</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Project</button>
+        <a href="{% url 'project_list' %}" class="btn btn-warning">Project List</a>
+    </form>
+{% endblock %}

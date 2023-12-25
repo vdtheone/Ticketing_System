@@ -1,0 +1,90 @@
+{% comment %} {% extends 'base.html' %}
+{% block title %}
+Assign Project
+{% endblock %}
+
+{% block content %}
+  <h2>Assign Project to Staff User</h2>
+
+  <!-- Button to create a new project -->
+  <a href="{% url 'create_project' %}" class="btn btn-primary mb-3">Create New Project</a>
+
+  <!-- Table to display the list of projects -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loop through projects -->
+      {% for project in projects %}
+        <tr>
+          <td>{{ project.name }}</td>
+          <td>{{ project.description }}</td>
+          <td>{{ project.status }}</td>
+          <td>
+            <!-- Edit button -->
+            <a href="{% url 'edit_project' project.id %}" class="btn btn-sm btn-primary">Edit</a>
+
+            <!-- Block/Unblock button -->
+            {% if project.is_blocked %}
+              <a href="{% url 'unblock_project' project.id %}" class="btn btn-sm btn-warning">Unblock</a>
+            {% else %}
+              <a href="{% url 'block_project' project.id %}" class="btn btn-sm btn-danger">Block</a>
+            {% endif %}
+
+            <!-- Delete button -->
+            <a href="{% url 'delete_project' project.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+            <!-- Assign button -->
+            <a href="{% url 'assign_project' project.id %}" class="btn btn-sm btn-info">Assign</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Project</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Assign Project to Staff User</h2>
+
+    <form method="post" action="{% url 'assign_project' project.id %}" class="my-4">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="id_staff_user" class="form-label">Select Staff User:</label>
+            <select id="id_staff_user" name="staff_user" class="form-select">
+                <!-- Option 1: Populate staff users from Django backend -->
+                {% for user in staff_users %}
+                    <option value="{{ user.id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Assign Project</button>
+    </form>
+</div>
+<!-- Bootstrap JS and jQuery (optional, for Bootstrap components that require JS) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> {% endcomment %}

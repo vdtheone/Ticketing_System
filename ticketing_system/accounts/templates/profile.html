@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}
+    Profile
+{% endblock %}
+{% block css %}
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .profile-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-info {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+    </style>
+    {% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="profile-container">
+                    <h1>User Profile</h1>
+                    <div class="profile-info">
+                        <p><strong>Username:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Number of Projects:</strong> {{ user.projects.count }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

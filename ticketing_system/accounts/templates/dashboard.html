@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    {% comment %} <h1 class="text-center mb-4">Ticketing System Dashboard</h1> {% endcomment %}
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card bg-danger text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Draft Tickets</h5>
+                    <p class="card-text display-4 font-weight-bold">{{ total_draft_tickets }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card bg-warning text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Ongoing Tickets</h5>
+                    <p class="card-text display-4 font-weight-bold">{{ total_ongoing_tickets }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card bg-success text-white mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Completed Tickets</h5>
+                    <p class="card-text display-4 font-weight-bold">{{ total_completed_tickets }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Ticket List Section -->
+    <h2 class="mt-5 mb-3">Your Assigned Tickets</h2>
+    <form method="GET" action="">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label for="timeFilter">Filter by Time:</label>
+                    <select id="timeFilter" name="timeFilter" class="form-control">
+                        <option value="all">All</option>
+                        <option value="day">Last 24 Hours</option>
+                        <option value="week">Last 7 Days</option>
+                        <option value="month">Last 30 Days</option>
+                        <!-- Add more options for time filtering -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Ticket Name</th>
+                    <th>Project Name</th>
+                    <th>User Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Populate the table with assigned tickets -->
+                {% for ticket in assigned_tickets %}
+                    <tr>
+                        <td>{{ ticket.id }}</td>
+                        <td><a href="{% url 'ticket_detail' ticket_id=ticket.id %}">{{ ticket.name }}</a></td>
+                        <td>{{ ticket.project }}</td>
+                        <td>{{ ticket.assigned_to }}</td>
+                        <td>{{ ticket.status }}</td>
+                        <td>
+                            {% if ticket.status == 'Draft' %}
+                            <a href="{% url 'update_ticket_status' ticket.id %}?status=Ongoing" class="btn btn-sm btn-warning">Set Ongoing</a>
+                            <a href="{% url 'update_ticket_status' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
+                            {% elif ticket.status == 'Ongoing' %}
+                            <a href="{% url 'update_ticket_status' ticket.id %}?status=Completed" class="btn btn-sm btn-success">Set Completed</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No assigned tickets found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+</div>
+    {% endblock %}
