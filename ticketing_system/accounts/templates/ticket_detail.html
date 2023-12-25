@@ -11,6 +11,9 @@ Ticket Details
         <p><strong>Project:</strong> {{ ticket.project }}</p>
         <p><strong>Status:</strong> {{ ticket.status }}</p>
         <p><strong>Creared At:</strong> {{ ticket.created_at }}</p>
+        <p><strong>Comments:</strong> {{ ticket.comment }}</p>
+
+
 
         <hr>
 
@@ -25,6 +28,20 @@ Ticket Details
                 <li class="list-group-item">No attachments for this ticket.</li>
             {% endfor %}
         </ul>
+
+
+        {% if ticket.status == "Ongoing" %} 
+            <hr> 
+            <form method="post">{% csrf_token %}
+                <div class="form-group">
+                    <strong><label for="comment">Write Comments</label></strong>
+                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Set Completed</button>
+            </form>
+    
+        {% endif %}
 
         
     {% endblock %}
