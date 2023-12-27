@@ -1,44 +1,38 @@
 {% extends 'base.html' %}
+
 {% block title %}
   Project List
 {% endblock %}
 
 {% block content %}
-    <h2>Assign Projects to Staff Users</h2>
+  <h2>Assign Projects to Staff Users</h2>
 
-    <form method="post" class="my-4">
-        {% csrf_token %}
+  <form method="post" class="my-4">
+    {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="id_staff_user" class="form-label">Select Staff User:</label>
-            <select id="id_staff_user" name="staff_user" class="form-select">
-                <!-- Option 1: Populate staff users from Django backend -->
-                {% for user in staff_users %}
-                    <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-                <!-- Option 2: Hardcoded staff users -->
-                <!--
-                <option value="1">Staff User 1</option>
-                <option value="2">Staff User 2</option>
-                -->
-            </select>
-        </div>
+    <div class="form-group row">
+      <label for="id_staff_user" class="col-sm-2 col-form-label">Select Staff User:</label>
+      <div class="col-sm-4">
+        <select id="id_staff_user" name="staff_user" class="form-control">
+          {% for user in staff_users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
 
-        <div class="mb-3">
-            <label for="id_project" class="form-label">Select Project:</label>
-            <select id="id_project" name="project" class="form-select">
-                <!-- Option 1: Populate projects from Django backend -->
-               
-                <option value="{{ project.id }}">{{ project.name }}</option>
-                
-                <!-- Option 2: Hardcoded projects -->
-                <!--
-                <option value="1">Project 1</option>
-                <option value="2">Project 2</option>
-                -->
-            </select>
-        </div>
+    <div class="form-group row">
+      <label for="id_project" class="col-sm-2 col-form-label">Project Name:</label>
+      <div class="col-sm-4">
+        <strong><p>{{ project.name }}</p></strong>
+      </div>
+    </div>
 
+    <div class="form-group row">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
         <button type="submit" class="btn btn-primary">Assign Project</button>
-    </form>
+      </div>
+    </div>
+  </form>
 {% endblock %}

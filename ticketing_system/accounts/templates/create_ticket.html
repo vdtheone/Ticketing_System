@@ -22,28 +22,16 @@
         <div class="mb-3">
             <label for="id_assigned_to" class="form-label">Assigned To:</label>
             <select id="id_assigned_to" name="assigned_to" class="form-select">
-                <!-- Option 1: Populate users from Django backend -->
                 {% for user in users %}
                     <option value="{{ user.id }}">{{ user.username }}</option>
                 {% endfor %}
-                <!-- Option 2: Hardcoded users -->
-                <!--
-                <option value="1">User 1</option>
-                <option value="2">User 2</option>
-                -->
             </select>
         </div>
 
         <div class="mb-3">
             <label for="id_project" class="form-label">Project:</label>
             <select id="id_project" name="project" class="form-select">
-                <!-- Option 1: Populate projects from Django backend -->
                 <option value="{{ project.id }}">{{ project.name }}</option>
-                <!-- Option 2: Hardcoded projects -->
-                <!--
-                <option value="1">Project 1</option>
-                <option value="2">Project 2</option>
-                -->
             </select>
         </div>
 

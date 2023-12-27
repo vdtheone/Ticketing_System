@@ -6,12 +6,10 @@
 {% block content %}
   <h2>Project List</h2>
 
-  <!-- Button to create a new project -->
   {% if request.user.is_superuser %}
   <a href="{% url 'create_project' %}" class="btn btn-primary mb-3">Create New Project</a>
   {% endif %}
-  {% comment %} <a href="{% url 'assign_projects' %}" class="btn btn-primary mb-3">Assign</a> {% endcomment %}
-
+  
   <!-- Table to display the list of projects -->
   <table class="table">
     <thead>
