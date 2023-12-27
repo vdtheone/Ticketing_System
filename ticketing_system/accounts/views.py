@@ -69,7 +69,7 @@ def create_project(request):
 def assign_projects(request, project_id):
     if request.method == "POST":
         staff_user_id = request.POST.get("staff_user")
-        project_id = request.POST.get("project")
+        # project_id = request.POST.get("project")
 
         # Fetch the staff user and project from the IDs
         staff_user = User.objects.get(pk=staff_user_id)
