@@ -1,12 +1,11 @@
 from django.urls import path
 from . import views  
 
+
 urlpatterns = [
     path('registration', views.user_registration, name='registration'),
     path('login', views.login, name='login'),
-    # path('create_project/', views.create_project, name='create_project'),
-    # path('assign_projects/', views.assign_projects, name='assign_projects'),
-
+    
     path('projects/', views.project_list, name='project_list'),
     path('projects/create/', views.create_project, name='create_project'),
     path('projects/<int:project_id>/edit/', views.edit_project, name='edit_project'),
