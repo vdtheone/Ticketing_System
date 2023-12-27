@@ -9,7 +9,7 @@ class TicketFilter(django_filters.FilterSet):
     assigned_to = django_filters.ChoiceFilter(
         choices=user_choices, widget=forms.Select(attrs={"class": "form-control"})
     )
-    
+
     STATUS_CHOICES = [
         ("Draft", "Draft"),
         ("Ongoing", "Ongoing"),
@@ -29,7 +29,6 @@ class TicketFilter(django_filters.FilterSet):
         parent = super().qs
         author = self.request.get("assigned_to", None)
         status = self.request.get("status", None)
-        parent = parent
 
         if author :
             if status:
