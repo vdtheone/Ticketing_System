@@ -33,8 +33,8 @@ Ticket Details
                 <div class="col-md-3">
                     <label for="id_status">Status:</label>
                     <select class="form-control" id="id_status" name="status">
-                        <option value="Ongoing">Ongoing</option>
-                        <option value="Completed">Completed</option>
+                        <option value="Ongoing" {% if ticket.status == "Ongoing" %}selected{% endif %}>Ongoing</option>
+                        <option value="Completed" {% if ticket.status == "Completed" %}selected{% endif %}>Completed</option>
                     </select>
                 </div>
             </div>
