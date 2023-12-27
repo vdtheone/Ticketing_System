@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-  <h2>Assign Projects to Staff Users</h2>
+  <h2>Assign Project</h2>
 
   <form method="post" class="my-4">
     {% csrf_token %}
@@ -24,15 +24,10 @@
     <div class="form-group row">
       <label for="id_project" class="col-sm-2 col-form-label">Project Name:</label>
       <div class="col-sm-4">
-        <strong><p>{{ project.name }}</p></strong>
+        <strong><p class="mt-2">{{ project.name }}</p></strong>
       </div>
     </div>
 
-    <div class="form-group row">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-4">
-        <button type="submit" class="btn btn-primary">Assign Project</button>
-      </div>
-    </div>
+    <button type="submit" class="btn btn-primary">Assign Project</button>
   </form>
 {% endblock %}
