@@ -6,6 +6,7 @@ from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .filters import TicketFilter
 
 
 # Create your views here.
@@ -28,7 +29,11 @@ def login(request):
         password = request.POST["password"]
 
         # Authenticate the user
-        user = User.objects.get(email=email)
+        user = User.objects.filter(email=email).first()
+        if not user:
+            messages.error(request,'Invalid email or password. Please try again.')
+            return render(request, "user_login.html")
+        
         password_matches = check_password(password, user.password)
 
         if password_matches:
@@ -250,31 +255,40 @@ def check_ticket(request, ticket_id):
 
 @login_required(login_url='login')
 def dashboard(request):
+    if not request.user.is_authenticated:
+        return render(request,'404.html')
     total_draft_tickets = Ticket.objects.filter(assigned_to=request.user, status="Draft").count()
     total_ongoing_tickets = Ticket.objects.filter(assigned_to=request.user, status="Ongoing").count()
     total_completed_tickets = Ticket.objects.filter(assigned_to=request.user, status="Completed").count()
-
+    
     allowed_statuses = ["Draft", "Ongoing", "Completed"]
     if request.user.is_superuser:
         assigned_tickets = Ticket.objects.all()
+        my_Filter = TicketFilter(request=request.GET, queryset=assigned_tickets)
+        assigned_tickets = my_Filter.qs
     else:
         assigned_tickets = Ticket.objects.filter(
             assigned_to=request.user, status__in=allowed_statuses
         )
+        
     time_filter = request.GET.get("timeFilter")
 
     if time_filter == "day":
         assigned_tickets = assigned_tickets.filter(
             created_at__gte=timezone.now() - timedelta(days=1)
         )
+        print(assigned_tickets)
+        
     elif time_filter == "week":
         assigned_tickets = assigned_tickets.filter(
             created_at__gte=timezone.now() - timedelta(days=7)
         )
+        
     elif time_filter == "month":
         assigned_tickets = assigned_tickets.filter(
             created_at__gte=timezone.now() - timedelta(days=30)
         )
+        
 
     return render(
         request,
@@ -285,6 +299,7 @@ def dashboard(request):
             "total_completed_tickets": total_completed_tickets,
             "assigned_tickets": assigned_tickets,
             "filter": time_filter,
+            "my_Filter":my_Filter
         },
     )
 
