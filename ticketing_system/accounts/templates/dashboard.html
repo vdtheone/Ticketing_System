@@ -3,12 +3,24 @@
 Dashboard
 {% endblock %}
 
+{% block css %}
+
+.hoverable {
+    transition: transform 0.3s ease;
+}
+
+.hoverable:hover {
+    transform: scale(1.05);
+}
+
+{% endblock css %}
+
 {% block content %}
 <div class="container mt-5">
     {% comment %} <h1 class="text-center mb-4">Ticketing System Dashboard</h1> {% endcomment %}
     <div class="row">
         <div class="col-lg-4">
-            <div class="card bg-danger text-white mb-3">
+            <div class="card bg-danger text-white mb-3 hoverable">
                 <div class="card-body">
                     <h5 class="card-title">Total Draft Tickets</h5>
                     <p class="card-text display-4 font-weight-bold">{{ total_draft_tickets }}</p>
@@ -16,7 +28,7 @@ Dashboard
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card bg-warning text-white mb-3">
+            <div class="card bg-warning text-white mb-3 hoverable">
                 <div class="card-body">
                     <h5 class="card-title">Total Ongoing Tickets</h5>
                     <p class="card-text display-4 font-weight-bold">{{ total_ongoing_tickets }}</p>
@@ -24,7 +36,7 @@ Dashboard
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="card bg-success text-white mb-3">
+            <div class="card bg-success text-white mb-3 hoverable">
                 <div class="card-body">
                     <h5 class="card-title">Total Completed Tickets</h5>
                     <p class="card-text display-4 font-weight-bold">{{ total_completed_tickets }}</p>
@@ -33,12 +45,13 @@ Dashboard
         </div>
     </div>
     
+    
 
     <!-- Ticket List Section -->
     <h2 class="mt-5 mb-3 text-center">Your Assigned Tickets</h2>
-    <form method="GET" action="">
+    <form method="GET">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <strong><label for="timeFilter">Filter by Time:</label></strong>
                     <select id="timeFilter" name="timeFilter" class="form-control">
@@ -49,8 +62,27 @@ Dashboard
                     </select>
                 </div>
             </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    {% csrf_token %}
+                    <strong><label for="timeFilter" class="mr-2">assigned_to:</label></strong>
+                    <div class="d-flex">
+                        {{ my_Filter.form.assigned_to }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <strong><label for="timeFilter" class="mr-2">status:</label></strong>
+                    <div class="d-flex">
+                        {{ my_Filter.form.status }}
+                        <button class="btn btn-outline-primary ml-2" type="submit">Search</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
+    
     
     
     <div class="table-responsive">
@@ -89,7 +121,7 @@ Dashboard
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="4">No assigned tickets found.</td>
+                        <td colspan="6">No assigned tickets found.</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -98,8 +130,8 @@ Dashboard
     
     
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+{% comment %}<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
     // jQuery function to detect change in select element
     $(document).ready(function() {
         $('#timeFilter').change(function() {
@@ -107,7 +139,7 @@ Dashboard
             $(this).closest('form').submit();
         });
     });
-</script>
+</script> {% endcomment %}
 
     {% endblock %}
 
